@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: revpulse-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: sales_ops_db
+      MYSQL_USER: salesops_user
+      MYSQL_PASSWORD: salesops_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
+    networks:
+      - revpulse-network
+
+  app:
+    build: .
+    container_name: revpulse-app
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      JWT_SECRET: super_secure_sales_ops_jwt_secret_key_2026_xyz123
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: salesops_user
+      DB_PASSWORD: salesops_password
+      DB_NAME: sales_ops_db
+      DB_CONNECTION_LIMIT: 10
+      ML_RETRAIN_INTERVAL_HOURS: 24
+      ML_MIN_CONFIDENCE_THRESHOLD: 0.65
+      ML_HIGH_RISK_THRESHOLD: 0.40
+      CORS_ORIGINS: http://localhost:5000,http://127.0.0.1:5000
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - revpulse-network
+
+volumes:
+  mysql_data:
+
+networks:
+  revpulse-network:
+    driver: bridge

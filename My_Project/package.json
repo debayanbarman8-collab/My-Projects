@@ -1,0 +1,42 @@
+{
+  "name": "revpulse-sales-ops-system",
+  "version": "1.0.0",
+  "description": "RevPulse - Enterprise Sales Operations Management & ML Revenue Intelligence System",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "db:migrate": "node database/migrate.js",
+    "db:seed": "node database/seed.js",
+    "test:ml": "node tests/test-ml.js",
+    "test:enterprise": "node tests/test-enterprise.js",
+    "test": "node tests/test-ml.js && node tests/test-enterprise.js && node tests/test-routes.js"
+  },
+  "keywords": [
+    "sales-operations",
+    "salesops",
+    "revops",
+    "pipeline-management",
+    "lead-scoring",
+    "machine-learning",
+    "deal-forecasting",
+    "quota-management",
+    "commissions-calculator",
+    "mysql",
+    "nodejs",
+    "tailwind"
+  ],
+  "author": "Sales Operations Engineering Team",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.12.0"
+  }
+}

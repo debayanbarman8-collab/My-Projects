@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RevPulse - Intelligent Sales Operations & Revenue Engine</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#1e1b4b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/custom.css" />
+</head>
+<body class="bg-[#0b0f19] text-slate-100 flex h-screen overflow-hidden selection:bg-indigo-500 selection:text-white">
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <aside class="w-64 border-r border-slate-800/80 bg-slate-950/70 flex flex-col justify-between p-4 shrink-0 z-20">
+    <div class="flex flex-col gap-6">
+      <!-- App Brand -->
+      <div class="flex items-center gap-3 px-2">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        </div>
+        <div>
+          <h1 class="font-extrabold text-base tracking-tight text-white flex items-center gap-1.5">
+            RevPulse <span class="text-[10px] uppercase font-mono px-1.5 py-0.2 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">SOMS</span>
+          </h1>
+          <p class="text-[11px] text-slate-400">Revenue & Sales Operations</p>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="flex flex-col gap-1.5">
+        <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold border transition-all text-left" data-tab="dashboard">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+          Executive Dashboard
+        </button>
+
+        <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold border border-transparent transition-all text-left text-slate-400 hover:text-slate-200 hover:bg-slate-900" data-tab="pipeline">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path></svg>
+          Pipeline & Kanban
+        </button>
+
+        <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold border border-transparent transition-all text-left text-slate-400 hover:text-slate-200 hover:bg-slate-900" data-tab="leads">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+          Leads & ML Scoring
+        </button>
+
+        <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold border border-transparent transition-all text-left text-slate-400 hover:text-slate-200 hover:bg-slate-900" data-tab="simulator">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+          ML "What-If" Simulator
+        </button>
+
+        <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold border border-transparent transition-all text-left text-slate-400 hover:text-slate-200 hover:bg-slate-900" data-tab="commissions">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          Quotas & Commissions
+        </button>
+
+        <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold border border-transparent transition-all text-left text-slate-400 hover:text-slate-200 hover:bg-slate-900" data-tab="territories">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          Territory Routing
+        </button>
+
+        <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold border border-transparent transition-all text-left text-slate-400 hover:text-slate-200 hover:bg-slate-900" data-tab="governance">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          ML Model Governance
+        </button>
+      </nav>
+    </div>
+
+    <!-- Active User & Engine Badge -->
+    <div class="border-t border-slate-800/80 pt-4 flex flex-col gap-3">
+      <div class="flex items-center justify-between text-[11px] px-1">
+        <span class="text-slate-400">Database Engine</span>
+        <span class="px-2 py-0.5 rounded-full font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          MySQL Relational
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3 p-2 rounded-xl bg-slate-900 border border-slate-800">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120" class="w-8 h-8 rounded-full object-cover ring-1 ring-indigo-500" />
+        <div class="overflow-hidden">
+          <p class="text-xs font-bold text-slate-100 truncate">Elena Vance</p>
+          <p class="text-[10px] text-indigo-400 truncate">Director of Sales Ops</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==================== MAIN CONTENT WRAPPER ==================== -->
+  <div class="flex-1 flex flex-col h-screen overflow-hidden">
+    
+    <!-- Top Header Bar -->
+    <header class="h-16 border-b border-slate-800/80 bg-slate-950/40 backdrop-blur-md px-6 flex items-center justify-between shrink-0 z-10">
+      <div class="flex items-center gap-4">
+        <span class="text-sm font-semibold text-slate-300">Enterprise RevOps Workspace</span>
+        <span class="h-4 w-px bg-slate-800"></span>
+        <span class="text-xs text-slate-400 flex items-center gap-1">
+          Fiscal Period: <strong class="text-slate-200">Q4-2026</strong>
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Global Command Palette Trigger -->
+        <button id="btn-cmd-palette" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-700/80 flex items-center gap-2 transition-all cursor-pointer" title="Global Quick Search (Ctrl+K)">
+          <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <span class="hidden sm:inline">Search...</span>
+          <kbd class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-slate-400">Ctrl+K</kbd>
+        </button>
+
+        <!-- Velocity SLA Notification Bell -->
+        <div class="relative">
+          <button id="btn-notifications" class="relative p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition-colors cursor-pointer" title="Velocity SLA & System Alerts">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+            <span id="notif-badge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-rose-500 text-[10px] font-bold rounded-full flex items-center justify-center text-white ring-2 ring-slate-950">0</span>
+          </button>
+          
+          <!-- Dropdown -->
+          <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto rounded-xl bg-slate-900 border border-slate-800 shadow-2xl z-50 p-3 flex flex-col gap-2">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                <span>⚠️</span> SLA & Velocity Alerts
+              </span>
+              <div class="flex items-center gap-2">
+                <button id="btn-scan-alerts" class="text-[10px] text-indigo-400 hover:text-indigo-300 font-medium">Scan Now</button>
+                <span class="text-slate-600">|</span>
+                <button id="btn-mark-all-read" class="text-[10px] text-slate-400 hover:text-slate-200">Clear</button>
+              </div>
+            </div>
+            <div id="notif-list" class="flex flex-col gap-1.5 text-xs max-h-72 overflow-y-auto">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+        <a href="/customer" class="px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-cyan-400 border border-cyan-500/30 transition-all flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+          Customer Portal &rarr;
+        </a>
+
+        <button id="btn-new-lead" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 transition-all flex items-center gap-1.5 shadow-sm">
+          <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          Capture Lead
+        </button>
+
+        <button id="btn-new-deal" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white shadow-lg shadow-indigo-600/20 transition-all flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+          Create Deal
+        </button>
+
+        <a href="/login" onclick="localStorage.removeItem('revpulse_token'); localStorage.removeItem('revpulse_user');" class="p-2 rounded-lg bg-slate-900 hover:bg-rose-950/60 text-slate-400 hover:text-rose-300 border border-slate-800 transition-colors ml-1" title="Sign Out">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+        </a>
+      </div>
+    </header>
+
+    <!-- Scrollable Body for Panes -->
+    <main class="flex-1 overflow-y-auto p-6 relative">
+      
+      <!-- ==================== TAB 1: EXECUTIVE DASHBOARD ==================== -->
+      <section id="tab-dashboard" class="tab-content flex flex-col gap-6">
+        <div>
+          <h2 class="text-xl font-bold tracking-tight text-white">Executive Revenue Intelligence</h2>
+          <p class="text-xs text-slate-400">Holistic pipeline performance, ML win probabilities, and quota coverage.</p>
+        </div>
+
+        <!-- 6 KPI Stat Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div class="glass-card rounded-xl p-4 flex flex-col justify-between">
+            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Total Pipeline ARR</span>
+            <div id="kpi-pipeline-arr" class="text-xl font-extrabold font-mono text-slate-100 my-1">$0</div>
+            <span class="text-[11px] text-indigo-400 font-medium">Unweighted Face Value</span>
+          </div>
+
+          <div class="glass-card rounded-xl p-4 flex flex-col justify-between border-indigo-500/30 glow-primary">
+            <span class="text-[11px] font-medium text-indigo-300 uppercase tracking-wider flex items-center gap-1">
+              <span>⚡</span> ML-Weighted Forecast
+            </span>
+            <div id="kpi-weighted-arr" class="text-xl font-extrabold font-mono text-indigo-300 my-1">$0</div>
+            <span class="text-[11px] text-emerald-400 font-semibold">Probability-Adjusted</span>
+          </div>
+
+          <div class="glass-card rounded-xl p-4 flex flex-col justify-between">
+            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Closed Won ARR</span>
+            <div id="kpi-closed-arr" class="text-xl font-extrabold font-mono text-emerald-400 my-1">$0</div>
+            <span class="text-[11px] text-slate-400">Quarter Attained</span>
+          </div>
+
+          <div class="glass-card rounded-xl p-4 flex flex-col justify-between">
+            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Win Rate</span>
+            <div id="kpi-win-rate" class="text-xl font-extrabold font-mono text-slate-100 my-1">0%</div>
+            <span class="text-[11px] text-slate-400">Won vs Lost Deals</span>
+          </div>
+
+          <div class="glass-card rounded-xl p-4 flex flex-col justify-between">
+            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Avg Sales Cycle</span>
+            <div id="kpi-avg-cycle" class="text-xl font-extrabold font-mono text-slate-100 my-1">0 Days</div>
+            <span class="text-[11px] text-slate-400">Lead-to-Close Velocity</span>
+          </div>
+
+          <div class="glass-card rounded-xl p-4 flex flex-col justify-between">
+            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Lead Conv. Rate</span>
+            <div id="kpi-conversion-rate" class="text-xl font-extrabold font-mono text-slate-100 my-1">0%</div>
+            <span class="text-[11px] text-slate-400">SDR Qualification</span>
+          </div>
+        </div>
+
+        <!-- 2 Main Analytics Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="glass-panel rounded-xl p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-sm font-bold text-slate-100">Revenue Forecast Categories</h3>
+                <p class="text-xs text-slate-400">Closed Won vs Commit vs Best Case vs Open Pipeline</p>
+              </div>
+              <span class="text-xs font-mono text-indigo-400 font-semibold">ARR ($)</span>
+            </div>
+            <div class="h-64">
+              <canvas id="chart-forecast-categories"></canvas>
+            </div>
+          </div>
+
+          <div class="glass-panel rounded-xl p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-sm font-bold text-slate-100">Funnel Progression & ML Valuation</h3>
+                <p class="text-xs text-slate-400">Face Value vs Machine Learning Calibrated Expected ARR</p>
+              </div>
+              <span class="text-xs font-mono text-emerald-400 font-semibold">Stage Funnel</span>
+            </div>
+            <div class="h-64">
+              <canvas id="chart-pipeline-funnel"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leaderboard & Velocity Bottlenecks Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="glass-panel rounded-xl p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-sm font-bold text-slate-100">Rep Quota Attainment Leaderboard</h3>
+                <p class="text-xs text-slate-400">Current Q4-2026 quota progress against targets</p>
+              </div>
+              <span class="text-xs text-slate-400">100% Target Mark</span>
+            </div>
+            <div class="h-56">
+              <canvas id="chart-rep-leaderboard"></canvas>
+            </div>
+          </div>
+
+          <div class="glass-panel rounded-xl p-5 shadow-xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+                  <span class="text-rose-400">⚠️</span> Velocity Bottleneck Alerts
+                </h3>
+                <span class="text-xs text-slate-400">Days In Stage Exceeded</span>
+              </div>
+              <p class="text-xs text-slate-400 mb-3">Deals exceeding maximum target stage dwell time:</p>
+              <div id="bottlenecks-list" class="flex flex-col gap-2.5">
+                <!-- Stalled deals loaded dynamically -->
+              </div>
+            </div>
+            <div class="text-[11px] text-slate-500 mt-4 border-t border-slate-800 pt-2 flex justify-between">
+              <span>Slippage risk automatically penalizes deal win probability in ML model.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 2: PIPELINE KANBAN ==================== -->
+      <section id="tab-pipeline" class="tab-content hidden flex flex-col gap-4 h-full">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold tracking-tight text-white">Interactive Deal Pipeline</h2>
+            <p class="text-xs text-slate-400">Drag and drop opportunities between stages to update progression & trigger ML recalculations.</p>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <button id="btn-export-deals" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 transition-all flex items-center gap-1.5 shadow-sm" title="Export Opportunities as RFC-4180 CSV">
+              <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              Export CSV
+            </button>
+            <div class="hidden md:flex items-center gap-2 text-xs text-slate-400 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
+              <span>💡 Tip: Moving to <strong>Closed Won</strong> automatically computes rep commission & quota acceleration.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kanban Board Target -->
+        <div id="kanban-board-container" class="flex-1 overflow-x-auto">
+          <!-- Populated by kanban.js -->
+        </div>
+      </section>
+
+      <!-- ==================== TAB 3: LEADS & ML SCORING ==================== -->
+      <section id="tab-leads" class="tab-content hidden flex flex-col gap-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold tracking-tight text-white">Leads Management & ML Scoring</h2>
+            <p class="text-xs text-slate-400">Supervised multi-factor lead scoring with Explainable AI attribution.</p>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <button id="btn-export-leads" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 transition-all flex items-center gap-1.5 shadow-sm" title="Export Leads as RFC-4180 CSV">
+              <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              Export CSV
+            </button>
+            <button id="btn-bulk-import-lead" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-indigo-300 border border-indigo-500/30 transition-all flex items-center gap-1.5 shadow-sm">
+              <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l4-4m0 0l4 4m-4-4v12"></path></svg>
+              Bulk Import CSV
+            </button>
+            <button onclick="document.getElementById('modal-new-lead').classList.remove('hidden')" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white transition-all flex items-center gap-1.5 shadow-md">
+              + Capture New Lead
+            </button>
+          </div>
+        </div>
+
+        <div class="glass-panel rounded-xl overflow-hidden border border-slate-800 shadow-xl">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 bg-slate-900/80 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  <th class="py-3 px-4">Contact</th>
+                  <th class="py-3 px-4">Company & Title</th>
+                  <th class="py-3 px-4">Firmographics</th>
+                  <th class="py-3 px-4">Lead Source</th>
+                  <th class="py-3 px-4">ML Score / Grade</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody id="leads-table-body">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 4: WHAT-IF SIMULATOR ==================== -->
+      <section id="tab-simulator" class="tab-content hidden flex flex-col gap-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold tracking-tight text-white">ML "What-If" Revenue Predictor</h2>
+            <p class="text-xs text-slate-400">Simulate strategic sales operational levers to forecast expected revenue impact.</p>
+          </div>
+          <button id="sim-reset-btn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 border border-slate-700">
+            Reset Sliders
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Left Column: Interactive Levers -->
+          <div class="glass-panel rounded-xl p-5 shadow-xl flex flex-col gap-5">
+            <h3 class="text-sm font-bold text-slate-100 border-b border-slate-800 pb-2">Operational Simulation Levers</h3>
+
+            <!-- Slider 1 -->
+            <div class="flex flex-col gap-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-300 font-medium">Rep Activity Cadence (Calls/Demos)</span>
+                <span id="sim-activity-val" class="font-mono text-indigo-400 font-bold">0%</span>
+              </div>
+              <input id="sim-activity" type="range" min="-30" max="50" value="0" step="5" class="w-full cursor-pointer" />
+              <span class="text-[11px] text-slate-500">Simulates SDR outreach volume and follow-up touchpoint velocity.</span>
+            </div>
+
+            <!-- Slider 2 -->
+            <div class="flex flex-col gap-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-300 font-medium">Discount Discipline (Price Protection)</span>
+                <span id="sim-discount-val" class="font-mono text-emerald-400 font-bold">-0%</span>
+              </div>
+              <input id="sim-discount" type="range" min="0" max="15" value="0" step="1" class="w-full cursor-pointer" />
+              <span class="text-[11px] text-slate-500">Reduces average discounting to preserve margin and signal value.</span>
+            </div>
+
+            <!-- Slider 3 -->
+            <div class="flex flex-col gap-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-300 font-medium">Executive Sponsor Adoption Rate</span>
+                <span id="sim-sponsor-val" class="font-mono text-indigo-400 font-bold">0%</span>
+              </div>
+              <input id="sim-sponsor" type="range" min="0" max="80" value="0" step="10" class="w-full cursor-pointer" />
+              <span class="text-[11px] text-slate-500">Percentage of open deals securing C-level/VP champions.</span>
+            </div>
+
+            <!-- Slider 4 -->
+            <div class="flex flex-col gap-1.5">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-300 font-medium">Sales Cycle Acceleration (Velocity)</span>
+                <span id="sim-velocity-val" class="font-mono text-indigo-400 font-bold">-0 days</span>
+              </div>
+              <input id="sim-velocity" type="range" min="0" max="10" value="0" step="1" class="w-full cursor-pointer" />
+              <span class="text-[11px] text-slate-500">Shortens days stalled in qualification and technical validation.</span>
+            </div>
+          </div>
+
+          <!-- Right Column: Results & Confidence Bands -->
+          <div class="lg:col-span-2 flex flex-col gap-6">
+            <!-- Simulated Metric Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div class="glass-card rounded-xl p-4">
+                <span class="text-[11px] font-medium text-slate-400 uppercase">Baseline Expected ARR</span>
+                <div id="sim-baseline-arr" class="text-lg font-bold font-mono text-slate-200 mt-1">$0</div>
+                <span class="text-[10px] text-slate-500">Current Model</span>
+              </div>
+
+              <div class="glass-card rounded-xl p-4 border-indigo-500/30">
+                <span class="text-[11px] font-medium text-indigo-300 uppercase">Simulated Expected ARR</span>
+                <div id="sim-simulated-arr" class="text-lg font-bold font-mono text-indigo-300 mt-1">$0</div>
+                <span class="text-[10px] text-indigo-400">Post-Strategy</span>
+              </div>
+
+              <div class="glass-card rounded-xl p-4 border-emerald-500/30 glow-emerald">
+                <span class="text-[11px] font-medium text-emerald-400 uppercase">Net ARR Delta</span>
+                <div id="sim-delta-arr" class="text-2xl font-bold font-mono text-emerald-400 mt-1">+$0</div>
+                <div id="sim-delta-pct" class="text-xs font-semibold text-emerald-400">+0.0% Projected</div>
+              </div>
+
+              <div class="glass-card rounded-xl p-4">
+                <span class="text-[11px] font-medium text-slate-400 uppercase">Projected Win Rate</span>
+                <div class="flex items-baseline gap-2 mt-1">
+                  <span id="sim-winrate-base" class="text-sm font-mono text-slate-400">0%</span>
+                  <span class="text-slate-500">&rarr;</span>
+                  <span id="sim-winrate-sim" class="text-lg font-bold font-mono text-emerald-400">0%</span>
+                </div>
+                <span class="text-[10px] text-slate-500">Portfolio Shift</span>
+              </div>
+            </div>
+
+            <!-- Confidence Bands Chart -->
+            <div class="glass-panel rounded-xl p-5 shadow-xl">
+              <h3 class="text-sm font-bold text-slate-100 mb-1">Forecast Confidence Intervals (P10 / P50 / P90)</h3>
+              <p class="text-xs text-slate-400 mb-3">Monte Carlo probabilistic revenue distribution.</p>
+              <div class="h-48">
+                <canvas id="chart-sim-bands"></canvas>
+              </div>
+            </div>
+
+            <!-- Top Impacted Deals -->
+            <div class="glass-panel rounded-xl p-5 shadow-xl">
+              <h3 class="text-sm font-bold text-slate-100 mb-2">Top Opportunities Benefiting from Strategy</h3>
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-800 text-[11px] font-bold text-slate-400 uppercase">
+                    <th class="py-2 px-3">Opportunity</th>
+                    <th class="py-2 px-3">Amount</th>
+                    <th class="py-2 px-3">Base Win %</th>
+                    <th class="py-2 px-3">Sim Win %</th>
+                    <th class="py-2 px-3">Prob Delta</th>
+                  </tr>
+                </thead>
+                <tbody id="sim-impacted-deals-body">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 5: QUOTAS & COMMISSIONS ==================== -->
+      <section id="tab-commissions" class="tab-content hidden flex flex-col gap-6">
+        <div>
+          <h2 class="text-xl font-bold tracking-tight text-white">Quotas & Automated Commission Engine</h2>
+          <p class="text-xs text-slate-400">Tiered accelerator calculation engine with split commissions and payout ledger.</p>
+        </div>
+
+        <!-- Team Quota Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="glass-card rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase font-medium">Team Target (Q4-2026)</span>
+            <div id="quota-team-target" class="text-xl font-extrabold font-mono text-slate-100 mt-1">$0</div>
+          </div>
+          <div class="glass-card rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase font-medium">Team Attained Closed ARR</span>
+            <div id="quota-team-attained" class="text-xl font-extrabold font-mono text-emerald-400 mt-1">$0</div>
+          </div>
+          <div class="glass-card rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase font-medium">Team Attainment %</span>
+            <div id="quota-team-pct" class="text-xl font-extrabold font-mono text-indigo-400 mt-1">0%</div>
+          </div>
+          <div class="glass-card rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase font-medium">Pipeline Coverage Ratio</span>
+            <div id="quota-team-coverage" class="text-sm font-bold font-mono text-slate-200 mt-1">0x</div>
+          </div>
+        </div>
+
+        <!-- Rep Performance Cards -->
+        <div>
+          <h3 class="text-sm font-bold text-slate-200 mb-3">Individual Account Executive Performance</h3>
+          <div id="reps-quota-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Loaded dynamically -->
+          </div>
+        </div>
+
+        <!-- Commission Accelerator Rules Explanation Card -->
+        <div class="glass-panel rounded-xl p-4 flex items-center justify-between border border-indigo-500/20 bg-indigo-950/20">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">⚡</span>
+            <div>
+              <h4 class="text-xs font-bold text-slate-100">Automated Tiered Accelerator Schedule</h4>
+              <p class="text-[11px] text-slate-400">
+                Tier 1 (&lt;100% quota): <strong>8% base</strong> | 
+                Tier 2 (100% - 125% quota): <strong>1.5x Accelerator (12%)</strong> | 
+                Tier 3 (&gt;125% quota): <strong>1.875x Super-Accelerator (15%)</strong>
+              </p>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-[11px] text-slate-400">Total Commissions Ledger:</div>
+            <div id="comm-total-payout" class="font-mono text-emerald-400 font-bold text-sm">$0</div>
+          </div>
+        </div>
+
+        <!-- Commissions Ledger Table -->
+        <div class="glass-panel rounded-xl overflow-hidden border border-slate-800 shadow-xl">
+          <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+            <h3 class="text-sm font-bold text-slate-100">Commissions Payout Ledger</h3>
+            <div class="flex items-center gap-3 text-xs">
+              <button id="btn-export-commissions" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-semibold border border-slate-700 flex items-center gap-1.5 transition-all" title="Export Commissions as RFC-4180 CSV">
+                <svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                Export CSV
+              </button>
+              <span class="text-slate-400">Paid: <strong id="comm-paid" class="text-emerald-400 font-mono">$0</strong></span>
+              <span class="text-slate-400">Pending: <strong id="comm-pending" class="text-amber-400 font-mono">$0</strong></span>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 bg-slate-900/80 text-[11px] font-bold text-slate-400 uppercase">
+                  <th class="py-3 px-4">ID</th>
+                  <th class="py-3 px-4">Sales Rep</th>
+                  <th class="py-3 px-4">Deal Share</th>
+                  <th class="py-3 px-4">Attainment %</th>
+                  <th class="py-3 px-4">Effective Rate</th>
+                  <th class="py-3 px-4">Total Payout</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody id="commissions-table-body">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 6: TERRITORY ROUTING ==================== -->
+      <section id="tab-territories" class="tab-content hidden flex flex-col gap-6">
+        <div>
+          <h2 class="text-xl font-bold tracking-tight text-white">Territory Management & Rule Engine</h2>
+          <p class="text-xs text-slate-400">Firmographic segmentation, regional boundaries, and automated lead allocation.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="territories-cards-container">
+          <!-- Loaded dynamically -->
+        </div>
+
+        <!-- Interactive Territory Routing Simulator -->
+        <div class="glass-panel rounded-xl p-5 shadow-xl">
+          <h3 class="text-sm font-bold text-slate-100 mb-1">Lead Routing Simulator</h3>
+          <p class="text-xs text-slate-400 mb-4">Test automated assignment against enterprise routing rules.</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs text-slate-300 font-medium mb-1">Company Headcount</label>
+              <input id="routing-sim-size" type="number" value="1200" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs font-mono text-slate-200" />
+            </div>
+
+            <div>
+              <label class="block text-xs text-slate-300 font-medium mb-1">Geographic Region</label>
+              <select id="routing-sim-region" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-slate-200">
+                <option value="North America">North America</option>
+                <option value="EMEA">EMEA</option>
+                <option value="APAC">APAC</option>
+                <option value="LATAM">LATAM</option>
+              </select>
+            </div>
+
+            <div class="flex items-end">
+              <button id="btn-test-routing" class="w-full px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md">
+                ⚡ Evaluate Routing Rules
+              </button>
+            </div>
+          </div>
+
+          <div id="routing-sim-result" class="mt-4 hidden">
+            <!-- Simulated routing result loaded dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 7: ML MODEL GOVERNANCE ==================== -->
+      <section id="tab-governance" class="tab-content hidden flex flex-col gap-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-bold tracking-tight text-white">Machine Learning Model Governance & Audit</h2>
+            <p class="text-xs text-slate-400">Model versioning, confusion matrix validation, and supervised retraining.</p>
+          </div>
+          <button id="btn-retrain-model" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white shadow-lg shadow-indigo-600/30 transition-all flex items-center gap-1.5">
+            ⚡ Retrain Model on Latest Historical Data
+          </button>
+        </div>
+
+        <!-- Model Metrics -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div class="glass-card rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase">Active Model Version</span>
+            <div id="ml-model-version" class="text-lg font-bold font-mono text-indigo-400 mt-1">v3.1.0</div>
+            <span class="text-[10px] text-slate-500">Ensemble LogisticNet</span>
+          </div>
+          <div class="glass-card rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase">Accuracy</span>
+            <div id="ml-metric-accuracy" class="text-lg font-bold font-mono text-emerald-400 mt-1">91.2%</div>
+            <span class="text-[10px] text-slate-500">Cross-Validated</span>
+          </div>
+          <div class="glass-card rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase">Precision</span>
+            <div id="ml-metric-precision" class="text-lg font-bold font-mono text-slate-200 mt-1">89.4%</div>
+            <span class="text-[10px] text-slate-500">Low False Positives</span>
+          </div>
+          <div class="glass-card rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase">Recall</span>
+            <div id="ml-metric-recall" class="text-lg font-bold font-mono text-slate-200 mt-1">88.7%</div>
+            <span class="text-[10px] text-slate-500">True Positive Capture</span>
+          </div>
+          <div class="glass-card rounded-xl p-4">
+            <span class="text-[11px] text-slate-400 uppercase">F1 Score</span>
+            <div id="ml-metric-f1" class="text-lg font-bold font-mono text-indigo-300 mt-1">89.0%</div>
+            <span class="text-[10px] text-slate-500">Harmonic Balance</span>
+          </div>
+          <div class="glass-card rounded-xl p-4 border-amber-500/30">
+            <span class="text-[11px] text-amber-300 uppercase">ROC-AUC</span>
+            <div id="ml-metric-auc" class="text-lg font-bold font-mono text-amber-400 mt-1">0.9410</div>
+            <span class="text-[10px] text-slate-500">Discriminative Power</span>
+          </div>
+        </div>
+
+        <!-- Hyperparameters & Confusion Matrix Info -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="glass-panel rounded-xl p-5 shadow-xl">
+            <h3 class="text-sm font-bold text-slate-100 mb-2">Model Architecture & Feature Coefficients</h3>
+            <p class="text-xs text-slate-400 mb-3">Trained on 14 orthogonal input features:</p>
+            <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+              <div class="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300">
+                <span class="text-emerald-400 font-bold">+0.85</span> Executive Sponsorship
+              </div>
+              <div class="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300">
+                <span class="text-emerald-400 font-bold">+0.60</span> Security Clearance
+              </div>
+              <div class="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300">
+                <span class="text-rose-400 font-bold">-0.50</span> Excessive Discount (&gt;18%)
+              </div>
+              <div class="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300">
+                <span class="text-rose-400 font-bold">-0.08/d</span> Stagnation Decay Penalty
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-panel rounded-xl p-5 shadow-xl">
+            <h3 class="text-sm font-bold text-slate-100 mb-2">Confusion Matrix Verification</h3>
+            <div class="grid grid-cols-2 gap-2 text-center text-xs">
+              <div class="p-3 rounded-lg bg-emerald-950/40 border border-emerald-500/30">
+                <div class="text-[10px] text-slate-400 uppercase">True Positive (Predicted Won & Won)</div>
+                <div class="text-xl font-bold font-mono text-emerald-400 mt-1">48.2%</div>
+              </div>
+              <div class="p-3 rounded-lg bg-rose-950/30 border border-rose-500/20">
+                <div class="text-[10px] text-slate-400 uppercase">False Positive (Predicted Won & Lost)</div>
+                <div class="text-xl font-bold font-mono text-rose-400 mt-1">6.8%</div>
+              </div>
+              <div class="p-3 rounded-lg bg-rose-950/30 border border-rose-500/20">
+                <div class="text-[10px] text-slate-400 uppercase">False Negative (Predicted Lost & Won)</div>
+                <div class="text-xl font-bold font-mono text-rose-400 mt-1">7.1%</div>
+              </div>
+              <div class="p-3 rounded-lg bg-indigo-950/40 border border-indigo-500/30">
+                <div class="text-[10px] text-slate-400 uppercase">True Negative (Predicted Lost & Lost)</div>
+                <div class="text-xl font-bold font-mono text-indigo-400 mt-1">37.9%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Training Logs Audit History -->
+        <div class="glass-panel rounded-xl overflow-hidden border border-slate-800 shadow-xl">
+          <div class="p-4 border-b border-slate-800">
+            <h3 class="text-sm font-bold text-slate-100">Model Training Audit Logs</h3>
+          </div>
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 bg-slate-900/80 text-[11px] font-bold text-slate-400 uppercase">
+                <th class="py-2.5 px-3">Model</th>
+                <th class="py-2.5 px-3">Version</th>
+                <th class="py-2.5 px-3">Samples</th>
+                <th class="py-2.5 px-3">Accuracy</th>
+                <th class="py-2.5 px-3">F1 Score</th>
+                <th class="py-2.5 px-3">ROC-AUC</th>
+                <th class="py-2.5 px-3">Trained At</th>
+              </tr>
+            </thead>
+            <tbody id="ml-logs-table-body">
+              <!-- Loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Immutable System Audit Trail Section -->
+        <div class="glass-panel rounded-xl overflow-hidden border border-slate-800 shadow-xl">
+          <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+            <div>
+              <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+                <span>🛡️</span> Enterprise Audit Trail & Governance Ledger
+              </h3>
+              <p class="text-xs text-slate-400">Immutable chronological record of sensitive operations, deal state shifts, and ML retrain runs.</p>
+            </div>
+            <button id="btn-refresh-audit" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 border border-slate-700 transition-all flex items-center gap-1.5 shadow-sm">
+              <svg class="w-3 h-3 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+              Refresh Audit Feed
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-800 bg-slate-900/80 text-[11px] font-bold text-slate-400 uppercase">
+                  <th class="py-2.5 px-3">Timestamp</th>
+                  <th class="py-2.5 px-3">Actor / User</th>
+                  <th class="py-2.5 px-3">Role</th>
+                  <th class="py-2.5 px-3">Action</th>
+                  <th class="py-2.5 px-3">Entity</th>
+                  <th class="py-2.5 px-3">Audit Details</th>
+                </tr>
+              </thead>
+              <tbody id="audit-logs-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================== DEAL DETAILS DRAWER ==================== -->
+  <div id="deal-drawer-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity"></div>
+  <aside id="deal-drawer" class="fixed top-0 right-0 w-full max-w-md h-screen bg-slate-950 border-l border-slate-800 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between">
+    <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-5">
+      <!-- Drawer Header -->
+      <div class="flex items-start justify-between border-b border-slate-800 pb-4">
+        <div>
+          <span id="drawer-deal-stage" class="px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Stage</span>
+          <h3 id="drawer-deal-title" class="text-base font-bold text-slate-100 mt-2">Deal Title</h3>
+          <p id="drawer-deal-account" class="text-xs text-slate-400 font-medium">Account</p>
+        </div>
+        <button id="close-deal-drawer" class="text-slate-400 hover:text-slate-100 p-1 text-lg">&times;</button>
+      </div>
+
+      <!-- Amount & ML Prob -->
+      <div class="grid grid-cols-2 gap-3">
+        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+          <span class="text-[10px] text-slate-400 uppercase">Deal Face Value</span>
+          <div id="drawer-deal-amount" class="text-lg font-mono font-bold text-emerald-400 mt-0.5">$0</div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+          <span class="text-[10px] text-slate-400 uppercase">ML Win Probability</span>
+          <div id="drawer-deal-prob" class="text-sm font-mono font-bold text-indigo-400 mt-0.5">0%</div>
+          <span id="drawer-deal-risk" class="text-[10px] text-amber-400 font-medium">Moderate Risk</span>
+        </div>
+      </div>
+
+      <!-- Rep Info -->
+      <div class="text-xs text-slate-400 flex justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+        <span>Assigned Rep:</span>
+        <strong id="drawer-deal-rep" class="text-slate-200">Sales Rep</strong>
+      </div>
+
+      <!-- Explainable AI Factors (XAI) -->
+      <div class="flex flex-col gap-3 p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+        <div class="flex items-center gap-1.5 text-xs font-bold text-indigo-400 uppercase tracking-wider">
+          <span>🧠</span> Explainable AI Win Prediction Drivers
+        </div>
+
+        <div>
+          <span class="text-[11px] font-semibold text-emerald-400 uppercase">Top Positive Drivers:</span>
+          <ul id="drawer-positive-drivers" class="mt-1 space-y-1"></ul>
+        </div>
+
+        <div class="pt-2 border-t border-slate-800">
+          <span class="text-[11px] font-semibold text-rose-400 uppercase">Top Risk Flags:</span>
+          <ul id="drawer-risk-factors" class="mt-1 space-y-1"></ul>
+        </div>
+      </div>
+
+      <!-- Activities Timeline -->
+      <div>
+        <div class="flex justify-between items-center mb-3">
+          <h4 class="text-xs font-bold text-slate-300 uppercase">Activity & Engagement History</h4>
+          <button id="btn-drawer-log-activity" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-indigo-400 font-semibold text-[11px] border border-slate-700">
+            + Log Activity
+          </button>
+        </div>
+        <div id="drawer-activities-timeline" class="space-y-3"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==================== MODAL: NEW LEAD (WITH LIVE ML SCORING) ==================== -->
+  <div id="modal-new-lead" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="glass-panel w-full max-w-2xl rounded-2xl p-6 shadow-2xl border border-slate-800 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+        <div>
+          <h3 class="text-base font-bold text-white">Capture Inbound/Outbound Lead</h3>
+          <p class="text-xs text-slate-400">Features live Explainable ML Lead Scoring as you fill parameters.</p>
+        </div>
+        <button id="close-new-lead-modal" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+
+      <!-- Live Score Badge Widget -->
+      <div class="mb-5 p-3.5 rounded-xl bg-slate-900 border border-indigo-500/30 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center">
+            <span id="preview-lead-score" class="font-mono font-extrabold text-indigo-300 text-sm">62/100</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-200">Real-Time ML Lead Grade</span>
+              <span id="preview-lead-grade" class="font-bold text-xs px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300">Grade C</span>
+            </div>
+            <div id="preview-lead-factors" class="flex flex-wrap gap-1.5 mt-1.5">
+              <!-- Live explainability tags -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form id="form-new-lead" class="grid grid-cols-2 gap-4 text-xs">
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">First Name</label>
+          <input id="nl-fname" type="text" required class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Last Name</label>
+          <input id="nl-lname" type="text" required class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Email</label>
+          <input id="nl-email" type="email" required class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Company</label>
+          <input id="nl-company" type="text" required class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Title</label>
+          <input id="nl-title" type="text" placeholder="e.g. VP of Infrastructure" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Industry</label>
+          <select id="nl-industry" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100">
+            <option value="Technology">Technology</option>
+            <option value="Financial Services">Financial Services</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Cybersecurity">Cybersecurity</option>
+            <option value="Transportation & Logistics">Transportation & Logistics</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Company Headcount</label>
+          <input id="nl-size" type="number" value="350" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Annual Revenue ($)</label>
+          <input id="nl-revenue" type="number" value="25000000" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Lead Source</label>
+          <select id="nl-source" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100">
+            <option value="Inbound Demo">Inbound Demo</option>
+            <option value="Partner Referral">Partner Referral</option>
+            <option value="Organic Search">Organic Search</option>
+            <option value="Webinar">Webinar</option>
+            <option value="Cold Outreach">Cold Outreach</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Urgency Level</label>
+          <select id="nl-urgency" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100">
+            <option value="Immediate">Immediate (&lt;30 days)</option>
+            <option value="High" selected>High (30-60 days)</option>
+            <option value="Medium">Medium (60-90 days)</option>
+            <option value="Low">Low (&gt;90 days)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Website Visits (30d)</label>
+          <input id="nl-visits" type="number" value="8" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Email Opens (Cadence)</label>
+          <input id="nl-opens" type="number" value="4" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <input id="nl-downloads" type="hidden" value="2" />
+        
+        <div class="col-span-2 flex items-center gap-6 py-2 border-t border-slate-800">
+          <label class="flex items-center gap-2 cursor-pointer text-slate-200">
+            <input id="nl-decision-maker" type="checkbox" checked class="w-4 h-4 accent-indigo-600 rounded" />
+            <span>Decision Maker Verified (VP/C-Level)</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer text-slate-200">
+            <input id="nl-budget" type="checkbox" checked class="w-4 h-4 accent-indigo-600 rounded" />
+            <span>Budget Approved for Fiscal Year</span>
+          </label>
+        </div>
+
+        <div class="col-span-2 pt-3 flex justify-end gap-3 border-t border-slate-800">
+          <button type="button" onclick="document.getElementById('modal-new-lead').classList.add('hidden')" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold shadow-lg shadow-indigo-600/30">
+            Save & Auto-Route Lead
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: NEW DEAL ==================== -->
+  <div id="modal-new-deal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="glass-panel w-full max-w-xl rounded-2xl p-6 shadow-2xl border border-slate-800 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+        <h3 class="text-base font-bold text-white">Create New Sales Opportunity</h3>
+        <button id="close-new-deal-modal" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+
+      <form id="form-new-deal" class="grid grid-cols-2 gap-4 text-xs">
+        <div class="col-span-2">
+          <label class="block text-slate-300 font-medium mb-1">Deal Title</label>
+          <input id="nd-title" type="text" placeholder="e.g. Apex Financial - RevOps Modernization" required class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Deal Amount (ARR $)</label>
+          <input id="nd-amount" type="number" value="150000" required class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 font-mono" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Pipeline Stage</label>
+          <select id="nd-stage" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100">
+            <option value="1">1. Discovery & Qualification</option>
+            <option value="2" selected>2. Solution Demo</option>
+            <option value="3">3. Technical Validation (POC)</option>
+            <option value="4">4. Proposal & Pricing</option>
+            <option value="5">5. Negotiation & Legal</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Assigned Rep</label>
+          <select id="nd-rep" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100"></select>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Expected Close Date</label>
+          <input id="nd-close-date" type="date" value="2026-12-31" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Forecast Category</label>
+          <select id="nd-forecast" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100">
+            <option value="Pipeline">Pipeline</option>
+            <option value="Best Case" selected>Best Case</option>
+            <option value="Commit">Commit</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Discount %</label>
+          <input id="nd-discount" type="number" value="5" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div class="col-span-2">
+          <label class="block text-slate-300 font-medium mb-1">Competitor</label>
+          <input id="nd-competitor" type="text" placeholder="e.g. Salesforce Revenue Cloud" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div class="col-span-2 flex items-center gap-6 py-2 border-t border-slate-800">
+          <label class="flex items-center gap-2 cursor-pointer text-slate-200">
+            <input id="nd-sponsor" type="checkbox" checked class="w-4 h-4 accent-indigo-600 rounded" />
+            <span>Has Executive Sponsor</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer text-slate-200">
+            <input id="nd-security" type="checkbox" class="w-4 h-4 accent-indigo-600 rounded" />
+            <span>Has Security / Legal Clearance</span>
+          </label>
+        </div>
+        <div class="col-span-2 pt-3 flex justify-end gap-3 border-t border-slate-800">
+          <button type="button" onclick="document.getElementById('modal-new-deal').classList.add('hidden')" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-semibold">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold">
+            Create Deal & Run ML Model
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: LOG ACTIVITY ==================== -->
+  <div id="modal-activity" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl border border-slate-800">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+        <h3 class="text-base font-bold text-white">Log Engagement Touchpoint</h3>
+        <button id="close-activity-modal" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+
+      <form id="form-activity" class="flex flex-col gap-3 text-xs">
+        <input id="act-deal-id" type="hidden" />
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Activity Type</label>
+          <select id="act-type" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100">
+            <option value="Call">Call</option>
+            <option value="Demo" selected>Demo</option>
+            <option value="Meeting">Meeting</option>
+            <option value="Proposal Sent">Proposal Sent</option>
+            <option value="Contract Sent">Contract Sent</option>
+            <option value="Note">Note</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Title</label>
+          <input id="act-title" type="text" required placeholder="e.g. Solution Architecture Review with CISO" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Description / Notes</label>
+          <textarea id="act-desc" rows="3" placeholder="Key outcomes, objections addressed, or next steps..." class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100"></textarea>
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Sentiment</label>
+          <select id="act-sentiment" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100">
+            <option value="Positive" selected>Positive</option>
+            <option value="Neutral">Neutral</option>
+            <option value="Negative">Negative / Risk</option>
+          </select>
+        </div>
+        <div class="pt-3 flex justify-end gap-3 border-t border-slate-800">
+          <button type="button" onclick="document.getElementById('modal-activity').classList.add('hidden')" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-semibold">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold">
+            Record Activity
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: CONVERT LEAD ==================== -->
+  <div id="modal-convert-lead" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="glass-panel w-full max-w-md rounded-2xl p-6 shadow-2xl border border-slate-800">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+        <h3 class="text-base font-bold text-white">Convert Lead to Active Opportunity</h3>
+        <button id="close-convert-modal" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+
+      <form id="form-convert-lead" class="flex flex-col gap-3 text-xs">
+        <input id="convert-lead-id" type="hidden" />
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Opportunity Title</label>
+          <input id="convert-deal-title" type="text" required class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Projected Deal Value (ARR $)</label>
+          <input id="convert-deal-amount" type="number" value="125000" required class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 font-mono" />
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Target Close Date</label>
+          <input id="convert-close-date" type="date" value="2027-01-31" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100" />
+        </div>
+        <div class="pt-3 flex justify-end gap-3 border-t border-slate-800">
+          <button type="button" onclick="document.getElementById('modal-convert-lead').classList.add('hidden')" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-semibold">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold">
+            Convert & Launch Deal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: GLOBAL COMMAND PALETTE (CTRL+K) ==================== -->
+  <div id="modal-cmd-palette" class="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-start justify-center pt-20 px-4 hidden">
+    <div class="glass-panel w-full max-w-2xl rounded-2xl p-4 shadow-2xl border border-slate-700 flex flex-col gap-3">
+      <!-- Search Input Bar -->
+      <div class="flex items-center gap-3 px-3.5 py-2.5 bg-slate-900 rounded-xl border border-slate-700">
+        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <input id="cmd-search-input" type="text" placeholder="Search deals, leads, accounts, or reps (e.g. 'Apex', 'Elena', 'Tech')..." class="bg-transparent flex-1 text-sm text-slate-100 placeholder-slate-500 focus:outline-none" autocomplete="off" />
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">ESC to close</span>
+      </div>
+
+      <!-- Quick Nav Pills -->
+      <div class="flex items-center gap-2 text-[11px] text-slate-400 px-1">
+        <span>Quick Jump:</span>
+        <button class="cmd-jump-pill px-2 py-0.5 rounded bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors" data-tab="pipeline">Deals Pipeline</button>
+        <button class="cmd-jump-pill px-2 py-0.5 rounded bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors" data-tab="leads">Leads & Scoring</button>
+        <button class="cmd-jump-pill px-2 py-0.5 rounded bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors" data-tab="commissions">Commissions</button>
+        <button class="cmd-jump-pill px-2 py-0.5 rounded bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition-colors" data-tab="governance">Governance & Audit</button>
+      </div>
+
+      <!-- Results Container -->
+      <div id="cmd-results-container" class="max-h-96 overflow-y-auto flex flex-col gap-2 mt-1">
+        <div class="text-xs text-slate-500 py-6 text-center">Type at least 2 characters to search across deals, leads, accounts, and reps...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: BULK LEAD INGESTION (CSV/JSON) ==================== -->
+  <div id="modal-bulk-import" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="glass-panel w-full max-w-2xl rounded-2xl p-6 shadow-2xl border border-slate-800 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <span>📥</span> Bulk CSV / JSON Lead Ingestion
+          </h3>
+          <p class="text-xs text-slate-400">Ingest up to 500 leads per batch with automated ML scoring and territory routing.</p>
+        </div>
+        <button id="close-bulk-import-modal" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+
+      <!-- Sample Format / Helpers -->
+      <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs mb-4">
+        <span class="text-slate-300">Format: Standard RFC-4180 CSV or JSON array (required: email, company).</span>
+        <button id="btn-load-sample-csv" class="px-2.5 py-1 rounded bg-indigo-600/20 text-indigo-300 hover:bg-indigo-600/30 border border-indigo-500/30 font-medium">
+          Load Sample Data
+        </button>
+      </div>
+
+      <!-- File upload or paste area -->
+      <div class="flex flex-col gap-3 text-xs">
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Paste CSV or JSON Content</label>
+          <textarea id="bulk-import-textarea" rows="8" placeholder="first_name,last_name,email,company,title,industry,company_size,annual_revenue,lead_source,urgency_level&#10;Alice,Smith,alice@novatech.io,NovaTech,CTO,Technology,450,35000000,Inbound Demo,High" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 font-mono text-xs"></textarea>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span class="text-slate-400">Or choose file:</span>
+          <input type="file" id="bulk-import-file" accept=".csv,.json" class="text-xs text-slate-400 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-300 hover:file:bg-slate-700" />
+        </div>
+
+        <div class="pt-3 flex justify-end gap-3 border-t border-slate-800">
+          <button type="button" id="btn-cancel-bulk-import" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 font-semibold">
+            Cancel
+          </button>
+          <button type="button" id="btn-submit-bulk-import" class="px-5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold flex items-center gap-2">
+            <span>⚡</span> Ingest & Auto-Route Leads
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION CONTAINER ==================== -->
+  <div id="toast-container" class="fixed bottom-6 right-6 flex flex-col gap-2.5 z-50 pointer-events-none"></div>
+
+  <!-- App Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/charts.js"></script>
+  <script src="/js/kanban.js"></script>
+  <script src="/js/simulator.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

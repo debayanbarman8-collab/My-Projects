@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RevPulse - Enterprise Customer Portal & Commercial Hub</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              500: '#0ea5e9',
+              600: '#0284c7'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      background-color: #080d1a;
+      color: #f1f5f9;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.25s ease-out;
+    }
+    .glass-card:hover {
+      border-color: rgba(14, 165, 233, 0.4);
+      box-shadow: 0 10px 30px -10px rgba(14, 165, 233, 0.15);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen selection:bg-cyan-500 selection:text-white">
+
+  <!-- ==================== TOP NAVIGATION ==================== -->
+  <header class="h-20 px-8 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md flex items-center justify-between sticky top-0 z-30">
+    <div class="flex items-center gap-4">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-extrabold text-base text-white">Client Experience Portal</span>
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+            Enterprise Client
+          </span>
+        </div>
+        <p id="header-company-name" class="text-xs text-slate-400">Apex Financial Cloud</p>
+      </div>
+    </div>
+
+    <!-- Right Side Actions & Profile -->
+    <div class="flex items-center gap-4">
+      <a href="/" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-semibold text-indigo-300 border border-indigo-500/30 transition-all flex items-center gap-1.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+        Switch to Sales Portal
+      </a>
+
+      <!-- Assigned AE Badge -->
+      <div class="hidden md:flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs">
+        <img id="header-ae-avatar" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100" class="w-6 h-6 rounded-full object-cover ring-1 ring-cyan-400" />
+        <div>
+          <span class="text-[10px] text-slate-400 block">Dedicated AE:</span>
+          <span id="header-ae-name" class="font-bold text-slate-200">Sarah Jenkins</span>
+        </div>
+      </div>
+
+      <!-- User Profile & Logout -->
+      <div class="flex items-center gap-3 pl-2 border-l border-slate-800">
+        <div class="text-right hidden sm:block">
+          <p id="user-display-name" class="text-xs font-bold text-slate-100">David Sterling</p>
+          <p id="user-display-title" class="text-[10px] text-slate-400">VP of Engineering</p>
+        </div>
+        <button onclick="logoutCustomer()" class="p-2 rounded-xl bg-slate-900 hover:bg-rose-950/60 text-slate-400 hover:text-rose-300 border border-slate-800 transition-colors" title="Log Out">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT BODY ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-6 md:p-8 space-y-8">
+    
+    <!-- Welcome Banner Card -->
+    <div class="glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden border border-cyan-500/20 bg-gradient-to-r from-slate-900/90 via-slate-900/50 to-cyan-950/20">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-cyan-500/20 text-cyan-300 font-semibold border border-cyan-500/30">
+            Active Commercial Review
+          </span>
+          <h1 id="banner-deal-title" class="text-2xl md:text-3xl font-extrabold text-white mt-2">
+            Multi-Region RevOps Modernization
+          </h1>
+          <p class="text-xs text-slate-400 mt-1 max-w-xl">
+            Welcome to your customized procurement dashboard. Review contractual terms, track implementation readiness, compute ROI impact, and communicate with your account team.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-4 shrink-0">
+          <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Total Annual Contract Value</span>
+            <div id="banner-deal-arr" class="text-2xl font-extrabold font-mono text-cyan-300 mt-0.5">$285,000 / yr</div>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800">
+            <span class="text-[10px] text-slate-400 uppercase font-semibold">Current Phase</span>
+            <div id="banner-deal-stage" class="text-sm font-bold text-emerald-400 mt-1 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Negotiation & Legal
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs for Customer Hub -->
+    <div class="flex border-b border-slate-800 gap-6 text-xs font-bold">
+      <button onclick="switchCustomerTab('commercials')" id="tab-btn-commercials" class="pb-3 border-b-2 border-cyan-500 text-cyan-400 transition-colors flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        Commercial Proposal & Pricing
+      </button>
+
+      <button onclick="switchCustomerTab('roadmap')" id="tab-btn-roadmap" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+        Implementation Roadmap
+      </button>
+
+      <button onclick="switchCustomerTab('roi')" id="tab-btn-roi" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+        Interactive ROI Calculator
+      </button>
+
+      <button onclick="switchCustomerTab('vault')" id="tab-btn-vault" class="pb-3 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition-colors flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+        Compliance & Security Vault
+      </button>
+    </div>
+
+    <!-- ==================== TAB 1: COMMERCIAL PROPOSAL & PRICING ==================== -->
+    <section id="pane-commercials" class="space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left 2 Cols: Pricing Breakdown Table -->
+        <div class="lg:col-span-2 glass-card rounded-2xl p-6 shadow-xl">
+          <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+            <div>
+              <h3 class="text-base font-bold text-white">Itemized Subscription Schedule</h3>
+              <p class="text-xs text-slate-400">Enterprise Master Pricing breakdown for fiscal year 2026-2027.</p>
+            </div>
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-400 text-xs font-semibold">
+              6.5% Enterprise Discount Applied
+            </span>
+          </div>
+
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b border-slate-800 text-slate-400 uppercase text-[10px] font-bold">
+                <th class="py-3 px-3">Solution Component</th>
+                <th class="py-3 px-3">Scope / Quantity</th>
+                <th class="py-3 px-3 text-right">Annual Fee</th>
+              </tr>
+            </thead>
+            <tbody id="pricing-items-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+            <tfoot>
+              <tr class="border-t-2 border-slate-700 font-bold text-slate-100">
+                <td colspan="2" class="py-3 px-3 text-sm">Net Annual Subscription (ARR)</td>
+                <td id="pricing-net-total" class="py-3 px-3 text-right font-mono text-cyan-400 text-base">$285,000</td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+            <span>Payment Terms: <strong>Net 30 / Annual Upfront</strong></span>
+            <span>Billing Currency: <strong>USD ($)</strong></span>
+          </div>
+        </div>
+
+        <!-- Right Col: Assigned Account Executive Card & Direct Message -->
+        <div class="glass-card rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+          <div>
+            <span class="text-[10px] text-cyan-400 font-mono uppercase font-semibold">Your Dedicated Account Team</span>
+            <div class="flex items-center gap-3 mt-3 mb-4">
+              <img id="ae-card-avatar" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150" class="w-12 h-12 rounded-full object-cover ring-2 ring-cyan-500" />
+              <div>
+                <h4 id="ae-card-name" class="font-bold text-white text-sm">Sarah Jenkins</h4>
+                <p id="ae-card-role" class="text-xs text-slate-400">Senior Enterprise AE</p>
+                <p id="ae-card-email" class="text-[11px] text-cyan-400 font-mono">sarah.j@revpulse.io</p>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs mb-4">
+              <p class="text-slate-300">
+                "Hello David! We are coordinating with your procurement team on the final SLA amendments. Feel free to message me directly below anytime."
+              </p>
+            </div>
+          </div>
+
+          <!-- Direct Message Form -->
+          <form id="customer-message-form" class="space-y-3">
+            <label class="block text-xs font-semibold text-slate-300">Direct Inquiries to AE</label>
+            <textarea id="customer-msg-input" rows="3" required placeholder="Ask a question about pricing, contract terms, or onboarding..." class="w-full px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-cyan-500"></textarea>
+            <button type="submit" class="w-full py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-2">
+              <span>Send Message to Sarah</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: IMPLEMENTATION ROADMAP ==================== -->
+    <section id="pane-roadmap" class="hidden space-y-6">
+      <div class="glass-card rounded-2xl p-6 shadow-xl">
+        <div class="mb-6">
+          <h3 class="text-base font-bold text-white">Enterprise Implementation Readiness Roadmap</h3>
+          <p class="text-xs text-slate-400">Milestone timeline from procurement to multi-region production rollout.</p>
+        </div>
+
+        <div id="milestones-timeline-container" class="space-y-6 relative pl-4 border-l-2 border-slate-800">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: INTERACTIVE ROI CALCULATOR ==================== -->
+    <section id="pane-roi" class="hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Controls -->
+        <div class="glass-card rounded-2xl p-6 shadow-xl space-y-5">
+          <div>
+            <h3 class="text-base font-bold text-white">Business Case Parameters</h3>
+            <p class="text-xs text-slate-400">Tailor inputs to your organization's sales headcount.</p>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-300 font-medium">Sales Rep Team Size</span>
+              <span id="roi-val-team" class="font-mono text-cyan-400 font-bold">50 Reps</span>
+            </div>
+            <input id="roi-input-team" type="range" min="10" max="250" value="50" step="5" class="w-full accent-cyan-500 cursor-pointer" />
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-300 font-medium">Average Rep Annual Comp ($)</span>
+              <span id="roi-val-salary" class="font-mono text-cyan-400 font-bold">$110,000</span>
+            </div>
+            <input id="roi-input-salary" type="range" min="60000" max="220000" value="110000" step="5000" class="w-full accent-cyan-500 cursor-pointer" />
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-300 font-medium">Hours Saved per Rep / Week</span>
+              <span id="roi-val-hours" class="font-mono text-cyan-400 font-bold">5 Hours</span>
+            </div>
+            <input id="roi-input-hours" type="range" min="1" max="10" value="5" step="1" class="w-full accent-cyan-500 cursor-pointer" />
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-300 font-medium">Win Rate Lift from ML Guidance</span>
+              <span id="roi-val-winrate" class="font-mono text-cyan-400 font-bold">+4.5%</span>
+            </div>
+            <input id="roi-input-winrate" type="range" min="1.0" max="10.0" value="4.5" step="0.5" class="w-full accent-cyan-500 cursor-pointer" />
+          </div>
+        </div>
+
+        <!-- ROI Projected Results Cards -->
+        <div class="lg:col-span-2 flex flex-col gap-6">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="glass-card rounded-xl p-4">
+              <span class="text-[10px] text-slate-400 uppercase font-semibold">Labor Value Reclaimed</span>
+              <div id="roi-res-labor" class="text-xl font-bold font-mono text-slate-100 mt-1">$687,500</div>
+              <span class="text-[10px] text-slate-500">50 wks / yr</span>
+            </div>
+
+            <div class="glass-card rounded-xl p-4">
+              <span class="text-[10px] text-slate-400 uppercase font-semibold">Revenue Uplift</span>
+              <div id="roi-res-uplift" class="text-xl font-bold font-mono text-cyan-400 mt-1">$2,025,000</div>
+              <span class="text-[10px] text-slate-500">+4.5% Conversion</span>
+            </div>
+
+            <div class="glass-card rounded-xl p-4 border-emerald-500/40 bg-emerald-950/20">
+              <span class="text-[10px] text-emerald-300 uppercase font-bold">Estimated Net Return</span>
+              <div id="roi-res-net" class="text-2xl font-extrabold font-mono text-emerald-400 mt-1">+$2.56M</div>
+              <span id="roi-res-pct" class="text-xs font-bold text-emerald-400 font-mono">1,708% Net ROI</span>
+            </div>
+
+            <div class="glass-card rounded-xl p-4">
+              <span class="text-[10px] text-slate-400 uppercase font-semibold">Payback Period</span>
+              <div id="roi-res-payback" class="text-xl font-bold font-mono text-slate-100 mt-1">0.7 Months</div>
+              <span class="text-[10px] text-slate-500">&lt; 30 Days</span>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6">
+            <h4 class="text-sm font-bold text-white mb-2">Executive Summary for Procurement Board</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              By replacing legacy point tools with RevPulse's autonomous ML Deal Scoring, automated commission calculations, and territory routing, Apex Financial recaptures an estimated <strong class="text-white">12,500 selling hours annually</strong> while delivering a projected payback cycle in less than one month.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: COMPLIANCE & SECURITY VAULT ==================== -->
+    <section id="pane-vault" class="hidden space-y-6">
+      <div class="glass-card rounded-2xl p-6 shadow-xl">
+        <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+          <div>
+            <h3 class="text-base font-bold text-white">Enterprise Compliance & Legal Repository</h3>
+            <p class="text-xs text-slate-400">Download cryptographically verified enterprise assurance collateral.</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-full text-xs font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            SOC2 Type II Certified
+          </span>
+        </div>
+
+        <div id="documents-vault-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Notification Container -->
+  <div id="customer-toast-container" class="fixed bottom-6 right-6 flex flex-col gap-2 z-50"></div>
+
+  <!-- Client Script for Customer Portal -->
+  <script>
+    let customerData = null;
+
+    async function initCustomerPortal() {
+      try {
+        const token = localStorage.getItem('revpulse_token');
+        const res = await fetch('/api/customer/overview', {
+          headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+        });
+
+        if (!res.ok) throw new Error('Failed to load portal');
+        const json = await res.json();
+        customerData = json.data;
+
+        renderCustomerUI(customerData);
+        initROICalculator();
+      } catch (err) {
+        console.error('Portal init failed:', err);
+      }
+    }
+
+    function renderCustomerUI(data) {
+      // Header & User info
+      document.getElementById('header-company-name').textContent = data.account.name;
+      document.getElementById('user-display-name').textContent = data.customer.name;
+      document.getElementById('user-display-title').textContent = data.customer.title;
+
+      // Banner deal
+      document.getElementById('banner-deal-title').textContent = data.primaryDeal.title;
+      document.getElementById('banner-deal-arr').textContent = '$' + Number(data.primaryDeal.amount).toLocaleString() + ' / yr';
+
+      // AE Card
+      document.getElementById('header-ae-name').textContent = data.assignedRep.name;
+      document.getElementById('header-ae-avatar').src = data.assignedRep.avatar_url;
+      document.getElementById('ae-card-name').textContent = data.assignedRep.name;
+      document.getElementById('ae-card-role').textContent = data.assignedRep.role;
+      document.getElementById('ae-card-email').textContent = data.assignedRep.email;
+      document.getElementById('ae-card-avatar').src = data.assignedRep.avatar_url;
+
+      // Pricing items
+      const pricingTbody = document.getElementById('pricing-items-tbody');
+      pricingTbody.innerHTML = '';
+      (data.pricing.items || []).forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-slate-800/80';
+        tr.innerHTML = `
+          <td class="py-3 px-3 font-semibold text-slate-200">${item.item}</td>
+          <td class="py-3 px-3 text-slate-400 font-mono">${item.qty}</td>
+          <td class="py-3 px-3 text-right font-mono text-slate-200 font-bold">$${item.price.toLocaleString()}</td>
+        `;
+        pricingTbody.appendChild(tr);
+      });
+      document.getElementById('pricing-net-total').textContent = '$' + Number(data.pricing.final_arr).toLocaleString();
+
+      // Milestones
+      const milestonesContainer = document.getElementById('milestones-timeline-container');
+      milestonesContainer.innerHTML = '';
+      (data.milestones || []).forEach(m => {
+        const isCompleted = m.status === 'Completed';
+        const isInProgress = m.status === 'In Progress';
+        const badgeColor = isCompleted ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : (isInProgress ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' : 'bg-slate-800 text-slate-400');
+
+        const el = document.createElement('div');
+        el.className = 'relative pl-6';
+        el.innerHTML = `
+          <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full ${isCompleted ? 'bg-emerald-400' : (isInProgress ? 'bg-cyan-400 animate-pulse' : 'bg-slate-700')} ring-4 ring-slate-900"></div>
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-sm text-slate-100">${m.title}</h4>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono border ${badgeColor}">${m.status}</span>
+          </div>
+          <p class="text-xs text-slate-400 mt-0.5">Timeline: <strong class="text-slate-300 font-mono">${m.date}</strong> | Lead: ${m.lead}</p>
+        `;
+        milestonesContainer.appendChild(el);
+      });
+
+      // Documents Vault
+      const vaultContainer = document.getElementById('documents-vault-container');
+      vaultContainer.innerHTML = '';
+      (data.documents || []).forEach(doc => {
+        const card = document.createElement('div');
+        card.className = 'glass-card rounded-xl p-4 flex items-center justify-between';
+        card.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-cyan-600/20 text-cyan-400 flex items-center justify-center font-mono font-bold text-xs shrink-0">
+              PDF
+            </div>
+            <div>
+              <h5 class="text-xs font-bold text-slate-100">${doc.title}</h5>
+              <p class="text-[10px] text-slate-400">${doc.size} • Verified: ${doc.date}</p>
+            </div>
+          </div>
+          <button onclick="downloadDocAlert('${doc.title}')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-400 font-semibold text-xs border border-slate-700 shrink-0">
+            Download
+          </button>
+        `;
+        vaultContainer.appendChild(card);
+      });
+    }
+
+    function switchCustomerTab(tab) {
+      ['commercials', 'roadmap', 'roi', 'vault'].forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const pane = document.getElementById(`pane-${t}`);
+        const isActive = t === tab;
+
+        pane.classList.toggle('hidden', !isActive);
+        btn.classList.toggle('border-cyan-500', isActive);
+        btn.classList.toggle('text-cyan-400', isActive);
+        btn.classList.toggle('border-transparent', !isActive);
+        btn.classList.toggle('text-slate-400', !isActive);
+      });
+    }
+
+    function downloadDocAlert(name) {
+      showToast(`Downloading verified compliance document: ${name}`, 'success');
+    }
+
+    // Message form submit
+    document.getElementById('customer-message-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = document.getElementById('customer-msg-input');
+      const msg = input.value;
+      const token = localStorage.getItem('revpulse_token');
+
+      try {
+        const res = await fetch('/api/customer/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+          },
+          body: JSON.stringify({ message: msg, deal_id: customerData ? customerData.primaryDeal.id : 1 })
+        });
+        const json = await res.json();
+        showToast(json.message || 'Message sent to your AE!', 'success');
+        input.value = '';
+      } catch (err) {
+        showToast('Error sending message: ' + err.message, 'error');
+      }
+    });
+
+    // ROI Calculator
+    function initROICalculator() {
+      const teamInput = document.getElementById('roi-input-team');
+      const salaryInput = document.getElementById('roi-input-salary');
+      const hoursInput = document.getElementById('roi-input-hours');
+      const winrateInput = document.getElementById('roi-input-winrate');
+
+      function recalculate() {
+        document.getElementById('roi-val-team').textContent = teamInput.value + ' Reps';
+        document.getElementById('roi-val-salary').textContent = '$' + Number(salaryInput.value).toLocaleString();
+        document.getElementById('roi-val-hours').textContent = hoursInput.value + ' Hours';
+        document.getElementById('roi-val-winrate').textContent = '+' + winrateInput.value + '%';
+
+        const team = Number(teamInput.value);
+        const salary = Number(salaryInput.value);
+        const hours = Number(hoursInput.value);
+        const winrate = Number(winrateInput.value);
+
+        const hourly = salary / 2000;
+        const labor = Math.round(team * (hours * 50) * hourly);
+        const uplift = Math.round(45000000 * (winrate / 100));
+        const total = labor + uplift;
+        const net = total - 150000;
+        const pct = Math.round((net / 150000) * 100);
+        const payback = (150000 / (total / 12)).toFixed(1);
+
+        document.getElementById('roi-res-labor').textContent = '$' + labor.toLocaleString();
+        document.getElementById('roi-res-uplift').textContent = '$' + uplift.toLocaleString();
+        document.getElementById('roi-res-net').textContent = '+$' + (net / 1000000).toFixed(2) + 'M';
+        document.getElementById('roi-res-pct').textContent = pct + '% Net ROI';
+        document.getElementById('roi-res-payback').textContent = payback + ' Months';
+      }
+
+      [teamInput, salaryInput, hoursInput, winrateInput].forEach(el => el.addEventListener('input', recalculate));
+      recalculate();
+    }
+
+    function logoutCustomer() {
+      localStorage.removeItem('revpulse_token');
+      localStorage.removeItem('revpulse_user');
+      window.location.href = '/login';
+    }
+
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('customer-toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'px-4 py-3 rounded-xl bg-slate-900 border border-cyan-500/40 text-cyan-200 text-xs shadow-2xl backdrop-blur-md flex items-center gap-2';
+      toast.innerHTML = `<span>✓</span> <span>${msg}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    }
+
+    document.addEventListener('DOMContentLoaded', initCustomerPortal);
+  </script>
+</body>
+</html>
